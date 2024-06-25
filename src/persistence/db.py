@@ -21,6 +21,11 @@ class DBRepository(Repository):
 
     def __init__(self) -> None:
         """Not implemented"""
+        HBNB_MYSQL_USER = getenv()
+        HBNB_MYSQL_PWD = getenv()
+        HBNB_MYSQL_HOST = getenv()
+        HBNB_MYSQL_DB = getenv()
+        HBNB_ENV = getenv()
 
     def get_all(self, model_name: str) -> list:
         """Not implemented"""
