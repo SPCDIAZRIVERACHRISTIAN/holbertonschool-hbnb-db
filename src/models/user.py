@@ -3,7 +3,7 @@ User related functionality
 """
 
 from src.models.base import Base
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String #ForeignKey maybe use it later idk
 from sqlalchemy.orm import relationship
 
 
@@ -11,10 +11,10 @@ class User(Base):
     """User representation"""
 
     __tablename__ = 'Users'
-    id = Column(String(156), unique=True, nullable=False primary_key=True)
+    id = Column(String(156), unique=True, nullable=False, primary_key=True)
     updated_at = Column(String(156))
     created_at = Column(String(156))
-    email = Column(String(156), nullable=False unique=True)
+    email = Column(String(156), nullable=False, unique=True)
     password = Column( nullable=False)#for later fixing
     is_admin = Column()#for later fixing
 #use relationship to link different classes you can use as argument options backref="" to link it as a A.b and cascade= which lets you do different things that will affect both classes
