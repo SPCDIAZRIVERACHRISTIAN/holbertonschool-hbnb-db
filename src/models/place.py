@@ -5,7 +5,8 @@ Place related functionality
 from src.models.base import Base
 from src.models.city import City
 from src.models.user import User
-from flask_sqlalchemy import SQLAlchemy, ForeignKey
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 
 
@@ -29,8 +30,8 @@ class Place(Base, db.Model):
     max_guests = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     updated_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    host = relationship("User")
-    city = relationship("City")
+    host = relationship("User", backref="Place")
+    city = relationship("City", backref="Place")
 #missing relationships
     name: str
     description: str

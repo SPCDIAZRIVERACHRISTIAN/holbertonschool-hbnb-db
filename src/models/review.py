@@ -21,8 +21,8 @@ class Review(Base, db.Model):
     rating = db.Column(db.Float)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     updated_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    place_id = relationship("Place")
-    user_id = relationship("User")
+    place_id = relationship("Place", backref="Review")
+    user_id = relationship("User", backref="Review")
     #missing relationships
     place_id: str
     user_id: str

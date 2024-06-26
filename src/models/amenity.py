@@ -4,17 +4,20 @@ Amenity related functionality
 
 from src.models.base import Base
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import ForeignKey, Column
 from sqlalchemy.orm import relationship
 
 
 db = SQLAlchemy()
 
-class Amenity(Base):
+class Amenity(Base, db.Model):
     """Amenity representation"""
 
     id = db.Column(db.String(36), unique=True, nullable=False, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    place = relationship("Place")
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    updated_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    PlaceAmenity = relationship("PlaceAemnity")
 
     name: str
 
@@ -66,8 +69,14 @@ class Amenity(Base):
         return amenity
 
 
-class PlaceAmenity(Base):
+from src.models.place import Place
+
+
+class PlaceAmenity(Base, db.Module):
     """PlaceAmenity representation"""
+
+    id = db.Column(db.String(36), unique=True, nullable=False, primary_key=True)
+    place_id = db.Column(db.String(36), ForeignKey(Place.id))
 
     place_id: str
     amenity_id: str

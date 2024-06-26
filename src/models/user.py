@@ -3,7 +3,7 @@ User related functionality
 """
 
 from src.models.base import Base
-from flask_sqlalchemy import SQLAlchemy #ForeignKey maybe use it later idk
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 
 
@@ -12,16 +12,17 @@ db = SQLAlchemy()
 class User(Base, db.Model):
     """User representation"""
 
-    id = db.Column(db.String(36), unique=True, nullable=False, primary_key=True)
+    id = db.Column(db.String(36), primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    first_name = db.column(db.String(56), nullable=False)
+    last_name = db.Column(db.String(56), nullable=False)
     password = db.Column(db.String(128), nullable=False)  # Ensure secure storage
     is_admin = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     updated_at = db.Column(db.DateTime, onupdate=db.func.current_timestamp())
-    place = relationship("Place")
-    amenity = relationship("Amenity")
-    city = relationship("City")
-    country = relationship("Country")#for later fixing
+    place = relationship("Place", backref="User")
+    amenity = relationship("Amenity", backref="User")
+    review = relationship("Review", backref="User")#for later fixing
 #use relationship to link different classes you can use as argument options backref="" to link it as a A.b and cascade= which lets you do different things that will affect both classes
 
     email: str

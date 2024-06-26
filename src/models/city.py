@@ -6,6 +6,7 @@ from src.models.base import Base
 from src.models.country import Country
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
+from sqlalchemy import ForeignKey
 
 
 db = SQLAlchemy()
@@ -15,7 +16,7 @@ class City(Base, db.Model):
 
     id = db.Column(db.String, nullable=False, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    country_code = db.Column(db.String, nullable=False, primary_key=True)
+    country_code = db.Column(db.String, ForeignKey(Country.code), nullable=False)
     country = relationship("Country")
 
     name: str
