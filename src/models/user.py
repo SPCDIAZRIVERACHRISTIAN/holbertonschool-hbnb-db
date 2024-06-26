@@ -3,19 +3,17 @@ User related functionality
 """
 
 from src.models.base import Base
-from flask_sqlalchemy import SQLAlchemy
+from . import db
 from sqlalchemy.orm import relationship
 
 
-db = SQLAlchemy()
-
-class User(Base, db.Model):
+class User(db.Model):
     """User representation"""
 
     id = db.Column(db.String(36), primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    first_name = db.column(db.String(56), nullable=False)
-    last_name = db.Column(db.String(56), nullable=False)
+    first_name = db.column(db.String(56))
+    last_name = db.Column(db.String(56))
     password = db.Column(db.String(128), nullable=False)  # Ensure secure storage
     is_admin = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
@@ -24,10 +22,6 @@ class User(Base, db.Model):
     amenity = relationship("Amenity", backref="User")
     review = relationship("Review", backref="User")#for later fixing
 #use relationship to link different classes you can use as argument options backref="" to link it as a A.b and cascade= which lets you do different things that will affect both classes
-
-    email: str
-    first_name: str
-    last_name: str
 
     def __init__(self, email: str, first_name: str, last_name: str, **kw):
         """Dummy init"""

@@ -3,23 +3,19 @@ Amenity related functionality
 """
 
 from src.models.base import Base
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import ForeignKey, Column
+from . import db
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 
 
-db = SQLAlchemy()
-
-class Amenity(Base, db.Model):
+class Amenity(db.Model):
     """Amenity representation"""
 
     id = db.Column(db.String(36), unique=True, nullable=False, primary_key=True)
     name = db.Column(db.String, nullable=False)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     updated_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    PlaceAmenity = relationship("PlaceAemnity")
-
-    name: str
+    PlaceAmenity = relationship("PlaceAmnity")
 
     def __init__(self, name: str, **kw) -> None:
         """Dummy init"""
@@ -77,6 +73,9 @@ class PlaceAmenity(Base, db.Module):
 
     id = db.Column(db.String(36), unique=True, nullable=False, primary_key=True)
     place_id = db.Column(db.String(36), ForeignKey(Place.id))
+    amenity_id = db.Column(db.String(36), ForeignKey(Amenity.id))
+    amenity = relationship('Amenity')
+    place = relationship('Place')
 
     place_id: str
     amenity_id: str

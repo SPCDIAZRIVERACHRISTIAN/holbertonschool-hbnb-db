@@ -2,12 +2,9 @@
 Country related functionality
 """
 
-from sqlalchemy import ForeignKey
-from flask_sqlalchemy import SQLAlchemy
+from . import db
 from sqlalchemy.orm import relationship
 
-
-db = SQLAlchemy()
 
 class Country(db.Model):
     """
@@ -21,10 +18,6 @@ class Country(db.Model):
     name = db.Column(db.String, nullable=False)
     code = db.Column(db.String, primary_key=True)
     city_list = relationship("City", backref="Country")
-
-    name: str
-    code: str
-    cities: list
 
     def __init__(self, name: str, code: str, **kw) -> None:
         """Dummy init"""

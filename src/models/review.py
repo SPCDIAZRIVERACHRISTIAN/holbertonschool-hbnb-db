@@ -6,13 +6,12 @@ from sqlalchemy import ForeignKey
 from src.models.base import Base
 from src.models.place import Place
 from src.models.user import User
-from flask_sqlalchemy import SQLAlchemy, ForeignKey
+from flask_sqlalchemy import ForeignKey
+from . import db
 from sqlalchemy.orm import relationship
 
 
-db = SQLAlchemy()
-
-class Review(Base, db.Model):
+class Review(db.Model):
     """Review representation"""
     id = db.Column(db.String(36), unique=True, nullable=False, primary_key=True)
     place_id = db.Column(db.String(36), ForeignKey(Place.id), unique=True, nullable=False, primary_key=True)
@@ -21,13 +20,8 @@ class Review(Base, db.Model):
     rating = db.Column(db.Float)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     updated_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    place_id = relationship("Place", backref="Review")
-    user_id = relationship("User", backref="Review")
-    #missing relationships
-    place_id: str
-    user_id: str
-    comment: str
-    rating: float
+    place_id = relationship("Place", backref="Place")
+    user_id = relationship("User", backref="User")
 
     def __init__(
         self, place_id: str, user_id: str, comment: str, rating: float, **kw

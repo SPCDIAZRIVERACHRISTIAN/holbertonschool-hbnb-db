@@ -4,15 +4,14 @@ Place related functionality
 
 from src.models.base import Base
 from src.models.city import City
+from src.models.review import Review
 from src.models.user import User
-from flask_sqlalchemy import SQLAlchemy
+from . import db
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 
 
-db = SQLAlchemy()
-
-class Place(Base, db.Model):
+class Place(db.Model):
     """Place representation"""
 
 
@@ -24,6 +23,7 @@ class Place(Base, db.Model):
     longitude = db.Column(db.Float)
     host_id = db.Column(db.String(36), ForeignKey(User.id), unique=True, nullable=False, primary_key=True)
     city_id = db.Column(db.String(36), ForeignKey(City.id), unique=True, nullable=False, primary_key=True)
+    review_id = db.Column(db.String(36), ForeignKey(Review.id), unique=True, nullable=False, primary_key=True)
     price_per_night = db.Column(db.Integer, nullable=False)
     number_of_rooms = db.Column(db.Integer, nullable=False)
     number_of_bathrooms = db.Column(db.Integer, nullable=False)
@@ -32,18 +32,7 @@ class Place(Base, db.Model):
     updated_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     host = relationship("User", backref="Place")
     city = relationship("City", backref="Place")
-#missing relationships
-    name: str
-    description: str
-    address: str
-    latitude: float
-    longitude: float
-    host_id: str
-    city_id: str
-    price_per_night: int
-    number_of_rooms: int
-    number_of_bathrooms: int
-    max_guests: int
+    review = relationship("Review", backref="Place")
 
     def __init__(self, data: dict | None = None, **kw) -> None:
         """Dummy init"""
