@@ -2,8 +2,13 @@
 Country related functionality
 """
 
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import relationship
 
-class Country:
+
+db = SQLAlchemy()
+
+class Country(db.Model):
     """
     Country representation
 
@@ -12,6 +17,11 @@ class Country:
     This class is used to get and list countries
     """
 
+    name = db.Column(db.String, nullable=False)
+    code = db.Column(db.String, unique=True, primary_key=True, nullable=False)
+    cities = db.Column(db.List, nullable=False, primary_key=True)
+    city_list = relationship("City")
+    
     name: str
     code: str
     cities: list

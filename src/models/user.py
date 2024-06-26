@@ -3,25 +3,30 @@ User related functionality
 """
 
 from src.models.base import Base
-from sqlalchemy import Column, Integer, String #ForeignKey maybe use it later idk
+from flask_sqlalchemy import SQLAlchemy #ForeignKey maybe use it later idk
 from sqlalchemy.orm import relationship
 
 
-class User(Base):
+db = SQLAlchemy()
+
+class User(Base, db.Model):
     """User representation"""
 
-    __tablename__ = 'Users'
-    id = Column(String(156), unique=True, nullable=False, primary_key=True)
-    updated_at = Column(String(156))
-    created_at = Column(String(156))
-    email = Column(String(156), nullable=False, unique=True)
-    password = Column( nullable=False)#for later fixing
-    is_admin = Column()#for later fixing
-#use relationship to link different classes you can use as argument options backref="" to link it as a A.b and cascade= which lets you do different things that will affect both classes
+    id = db.Column(db.String(36), unique=True, nullable=False, primary_key=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(128), nullable=False)  # Ensure secure storage
+    is_admin = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.current_timestamp())
     place = relationship("Place")
     amenity = relationship("Amenity")
     city = relationship("City")
-    country = relationship("Country")
+    country = relationship("Country")#for later fixing
+#use relationship to link different classes you can use as argument options backref="" to link it as a A.b and cascade= which lets you do different things that will affect both classes
+
+    email: str
+    first_name: str
+    last_name: str
 
     def __init__(self, email: str, first_name: str, last_name: str, **kw):
         """Dummy init"""

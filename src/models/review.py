@@ -2,14 +2,28 @@
 Review related functionality
 """
 
+from sqlalchemy import ForeignKey
 from src.models.base import Base
 from src.models.place import Place
 from src.models.user import User
+from flask_sqlalchemy import SQLAlchemy, ForeignKey
+from sqlalchemy.orm import relationship
 
 
-class Review(Base):
+db = SQLAlchemy()
+
+class Review(Base, db.Model):
     """Review representation"""
-
+    id = db.Column(db.String(36), unique=True, nullable=False, primary_key=True)
+    place_id = db.Column(db.String(36), ForeignKey(Place.id), unique=True, nullable=False, primary_key=True)
+    user_id = db.Column(db.String(36), ForeignKey(User.id), unique=True, nullable=False, primary_key=True)
+    comment = db.Column(db.String(256), nullable=False)
+    rating = db.Column(db.Float)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    updated_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    place_id = relationship("Place")
+    user_id = relationship("User")
+    #missing relationships
     place_id: str
     user_id: str
     comment: str

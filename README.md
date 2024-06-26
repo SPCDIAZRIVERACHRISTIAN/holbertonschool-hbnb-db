@@ -23,6 +23,7 @@ It passes the tests provided in the `/hbnb/part1/tests` directory.
 > [!TIP]
 > You can preload the persistence layer selected via the `reload` method in the `Repository` class.
 > This method is called in the `__init__` method of the `Repository` class.
+> To implement the file storage type int the terminal `export REPOSITORY=file` This command will make the environment work with the file storage implementation.
 
 ---
 

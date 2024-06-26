@@ -3,10 +3,18 @@ Amenity related functionality
 """
 
 from src.models.base import Base
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import relationship
 
+
+db = SQLAlchemy()
 
 class Amenity(Base):
     """Amenity representation"""
+
+    id = db.Column(db.String(36), unique=True, nullable=False, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    place = relationship("Place")
 
     name: str
 

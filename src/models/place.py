@@ -5,11 +5,33 @@ Place related functionality
 from src.models.base import Base
 from src.models.city import City
 from src.models.user import User
+from flask_sqlalchemy import SQLAlchemy, ForeignKey
+from sqlalchemy.orm import relationship
 
 
-class Place(Base):
+db = SQLAlchemy()
+
+class Place(Base, db.Model):
     """Place representation"""
 
+
+    id = db.Column(db.String(36), unique=True, nullable=False, primary_key=True)
+    name = db.Column(db.String, )
+    description = db.Column(db.String, nullable=False)
+    address = db.Column(db.String, nullable=False)
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
+    host_id = db.Column(db.String(36), ForeignKey(User.id), unique=True, nullable=False, primary_key=True)
+    city_id = db.Column(db.String(36), ForeignKey(City.id), unique=True, nullable=False, primary_key=True)
+    price_per_night = db.Column(db.Integer, nullable=False)
+    number_of_rooms = db.Column(db.Integer, nullable=False)
+    number_of_bathrooms = db.Column(db.Integer, nullable=False)
+    max_guests = db.Column(db.Integer, nullable=False)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    updated_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    host = relationship("User")
+    city = relationship("City")
+#missing relationships
     name: str
     description: str
     address: str

@@ -4,10 +4,19 @@ City related functionality
 
 from src.models.base import Base
 from src.models.country import Country
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import relationship
 
 
-class City(Base):
+db = SQLAlchemy()
+
+class City(Base, db.Model):
     """City representation"""
+
+    id = db.Column(db.String, nullable=False, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    country_code = db.Column(db.String, nullable=False, primary_key=True)
+    country = relationship("Country")
 
     name: str
     country_code: str
