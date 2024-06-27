@@ -2,9 +2,14 @@
 Users controller module
 """
 
+from src.persistence.db import DBRepository # Add this in every routes file
+from persistence.__init__ import db_session # Add this in every routes file
 from flask import abort, request
 from src.models.user import User
+from persistence.memory import MemoryRepository
 
+
+db_repository = DBRepository(db_session)
 
 def get_users():
     """Returns all users"""
@@ -13,12 +18,18 @@ def get_users():
     return [user.to_dict() for user in users]
 
 
-def create_user():
-    """Creates a new user"""
+def create_user(): #use this function as an example to links the CRUD ops in other models and methods
+    """
+        Creates a new user and depending on what type
+        type of storage it has it decides where to store it
+    """
     data = request.get_json()
 
     try:
-        user = User.create(data)
+        if MemoryRepository.self.storage_type == 'database':
+            user = db_repository.create(User, **data)
+        elif MemoryRepository.self.storage_type == 'file':
+            user = User.create(data)
     except KeyError as e:
         abort(400, f"Missing field: {e}")
     except ValueError as e:

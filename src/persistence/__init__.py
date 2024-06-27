@@ -6,12 +6,19 @@ import os
 from src.persistence.repository import Repository
 from utils.constants import REPOSITORY_ENV_VAR
 
+
 repo: Repository
 
 if os.getenv(key=REPOSITORY_ENV_VAR) == "db":
     from src.persistence.db import DBRepository
+    from sqlalchemy import create_engine
+    from sqlalchemy.orm import sessionmaker
 
-    repo = DBRepository()
+    database_url = os.getenv('DATABASE_URL', 'sqlite:///development.db')
+    engine = create_engine(database_url)
+    session = sessionmaker(bind=engine)
+
+    repo = DBRepository(db_session=session, engine=engine)
 elif os.getenv(REPOSITORY_ENV_VAR) == "file":
     from src.persistence.file import FileRepository
 
