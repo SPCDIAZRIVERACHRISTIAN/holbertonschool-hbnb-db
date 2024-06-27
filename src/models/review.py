@@ -2,26 +2,23 @@
 Review related functionality
 """
 
-from sqlalchemy import ForeignKey
 from src.models.base import Base
 from src.models.place import Place
 from src.models.user import User
-from flask_sqlalchemy import ForeignKey
 from . import db
-from sqlalchemy.orm import relationship
 
 
 class Review(db.Model):
     """Review representation"""
-    id = db.Column(db.String(36), unique=True, nullable=False, primary_key=True)
-    place_id = db.Column(db.String(36), ForeignKey(Place.id), unique=True, nullable=False, primary_key=True)
-    user_id = db.Column(db.String(36), ForeignKey(User.id), unique=True, nullable=False, primary_key=True)
-    comment = db.Column(db.String(256), nullable=False)
-    rating = db.Column(db.Float)
-    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    updated_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    place_id = relationship("Place", backref="Place")
-    user_id = relationship("User", backref="User")
+    __tablename__ = 'reviews'
+
+    place_id = db.Column(db.String(36), db.ForeignKey('places.id'), nullable=False)
+    user_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
+    comment = db.Column(db.Text, nullable=False)
+    rating = db.Column(db.Float, nullable=False)
+
+    place = db.relationship('Place', back_populates='reviews')
+    user = db.relationship('User', back_populates='reviews')
 
     def __init__(
         self, place_id: str, user_id: str, comment: str, rating: float, **kw

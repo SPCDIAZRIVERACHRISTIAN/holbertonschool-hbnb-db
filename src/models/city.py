@@ -2,20 +2,18 @@
 City related functionality
 """
 
-from src.models.base import Base
 from src.models.country import Country
 from . import db
-from sqlalchemy.orm import relationship
-from sqlalchemy import ForeignKey
 
 
 class City(db.Model):
     """City representation"""
+    __tablename__ = 'cities'
 
-    id = db.Column(db.String, nullable=False, primary_key=True)
-    name = db.Column(db.String, nullable=False)
-    country_code = db.Column(db.String, ForeignKey(Country.code), nullable=False)
-    country = relationship("Country")
+    name = db.Column(db.String(120), nullable=False)
+    country_code = db.Column(db.String(3), db.ForeignKey('countries.code'), nullable=False)
+    country = db.relationship('Country', back_populates='cities')
+    places = db.relationship('Place', back_populates='city')
 
     def __init__(self, name: str, country_code: str, **kw) -> None:
         """Dummy init"""

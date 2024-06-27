@@ -28,8 +28,14 @@ class MemoryRepository(Repository):
         "placeamenity": [],
     }
 
-    def __init__(self) -> None:
+    def __init__(self, storage_type='database') -> None:
         """Calls reload method"""
+
+        self.storage_type = storage_type
+        if self.storage_type == 'database':
+            self.storage = None #add database way to initialize storage
+        elif storage_type == 'file':
+            self.storage = None #add file storage implementation
         self.reload()
 
     def get_all(self, model_name: str) -> list:

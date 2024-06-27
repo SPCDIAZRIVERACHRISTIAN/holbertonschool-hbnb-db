@@ -4,24 +4,18 @@ User related functionality
 
 from src.models.base import Base
 from . import db
-from sqlalchemy.orm import relationship
 
 
 class User(db.Model):
     """User representation"""
 
-    id = db.Column(db.String(36), primary_key=True)
+    __tablename__ = 'users'
+
     email = db.Column(db.String(120), unique=True, nullable=False)
-    first_name = db.column(db.String(56))
-    last_name = db.Column(db.String(56))
-    password = db.Column(db.String(128), nullable=False)  # Ensure secure storage
-    is_admin = db.Column(db.Boolean, default=False)
-    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    updated_at = db.Column(db.DateTime, onupdate=db.func.current_timestamp())
-    place = relationship("Place", backref="User")
-    amenity = relationship("Amenity", backref="User")
-    review = relationship("Review", backref="User")#for later fixing
-#use relationship to link different classes you can use as argument options backref="" to link it as a A.b and cascade= which lets you do different things that will affect both classes
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
+    places = db.relationship('Place', back_populates='host')
+    reviews = db.relationship('Review', back_populates='user')
 
     def __init__(self, email: str, first_name: str, last_name: str, **kw):
         """Dummy init"""

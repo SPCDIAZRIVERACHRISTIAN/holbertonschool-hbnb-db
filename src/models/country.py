@@ -1,9 +1,7 @@
 """
 Country related functionality
 """
-
 from . import db
-from sqlalchemy.orm import relationship
 
 
 class Country(db.Model):
@@ -15,9 +13,11 @@ class Country(db.Model):
     This class is used to get and list countries
     """
 
-    name = db.Column(db.String, nullable=False)
-    code = db.Column(db.String, primary_key=True)
-    city_list = relationship("City", backref="Country")
+    __tablename__ = 'countries'
+
+    code = db.Column(db.String(3), primary_key=True)
+    name = db.Column(db.String(120), nullable=False)
+    cities = db.relationship('City', back_populates='country')
 
     def __init__(self, name: str, code: str, **kw) -> None:
         """Dummy init"""

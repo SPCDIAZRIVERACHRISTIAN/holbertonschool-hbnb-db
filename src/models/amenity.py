@@ -4,18 +4,14 @@ Amenity related functionality
 
 from src.models.base import Base
 from . import db
-from sqlalchemy import ForeignKey
-from sqlalchemy.orm import relationship
 
 
 class Amenity(db.Model):
     """Amenity representation"""
+    __tablename__ = 'amenities'
 
-    id = db.Column(db.String(36), unique=True, nullable=False, primary_key=True)
-    name = db.Column(db.String, nullable=False)
-    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    updated_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    PlaceAmenity = relationship("PlaceAmnity")
+    name = db.Column(db.String(120), unique=True, nullable=False)
+    places = db.relationship('PlaceAmenity', back_populates='amenity')
 
     def __init__(self, name: str, **kw) -> None:
         """Dummy init"""
@@ -65,20 +61,17 @@ class Amenity(db.Model):
         return amenity
 
 
-from src.models.place import Place
-
-
-class PlaceAmenity(Base, db.Module):
+class PlaceAmenity(db.Model):
     """PlaceAmenity representation"""
+    __tablename__ = 'place_amenities'
 
-    id = db.Column(db.String(36), unique=True, nullable=False, primary_key=True)
-    place_id = db.Column(db.String(36), ForeignKey(Place.id))
-    amenity_id = db.Column(db.String(36), ForeignKey(Amenity.id))
-    amenity = relationship('Amenity')
-    place = relationship('Place')
+    place_id = db.Column(db.String(36), db.ForeignKey('places.id'), primary_key=True)
+    amenity_id = db.Column(db.String(36), db.ForeignKey('amenities.id'), primary_key=True)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.current_timestamp())
 
-    place_id: str
-    amenity_id: str
+    place = db.relationship('Place', back_populates='amenities')
+    amenity = db.relationship('Amenity', back_populates='places')
 
     def __init__(self, place_id: str, amenity_id: str, **kw) -> None:
         """Dummy init"""
