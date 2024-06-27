@@ -12,6 +12,7 @@ class Place(db.Model):
     """Place representation"""
     __tablename__ = 'places'
 
+    id = db.Column(db.String(36), primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     description = db.Column(db.Text, nullable=True)
     address = db.Column(db.String(255), nullable=False)

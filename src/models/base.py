@@ -3,10 +3,12 @@
 from datetime import datetime
 from typing import Any, Optional
 import uuid
-from abc import ABC, abstractmethod
+from abc import abstractmethod
+from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy import Column, String, DateTime
 
 
-class Base(ABC):
+class Base(DeclarativeBase):
     """
     Base Interface for all models
     """

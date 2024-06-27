@@ -15,6 +15,9 @@ def create_app(config_class="src.config.DevelopmentConfig") -> Flask:
     app = Flask(__name__)
     app.url_map.strict_slashes = False
     app.config.from_object(config_class)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///development.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['USE_DATABASE'] = True
 
     from src.models import db
 

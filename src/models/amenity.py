@@ -10,6 +10,7 @@ class Amenity(db.Model):
     """Amenity representation"""
     __tablename__ = 'amenities'
 
+    id = db.Column(db.String(36), primary_key=True)
     name = db.Column(db.String(120), unique=True, nullable=False)
     places = db.relationship('PlaceAmenity', back_populates='amenity')
 
@@ -65,6 +66,7 @@ class PlaceAmenity(db.Model):
     """PlaceAmenity representation"""
     __tablename__ = 'place_amenities'
 
+    id = db.Column(db.String(36), primary_key=True)
     place_id = db.Column(db.String(36), db.ForeignKey('places.id'), primary_key=True)
     amenity_id = db.Column(db.String(36), db.ForeignKey('amenities.id'), primary_key=True)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())

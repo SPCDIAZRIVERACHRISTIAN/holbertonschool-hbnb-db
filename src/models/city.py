@@ -10,6 +10,7 @@ class City(db.Model):
     """City representation"""
     __tablename__ = 'cities'
 
+    id = db.Column(db.String(36), primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     country_code = db.Column(db.String(3), db.ForeignKey('countries.code'), nullable=False)
     country = db.relationship('Country', back_populates='cities')
