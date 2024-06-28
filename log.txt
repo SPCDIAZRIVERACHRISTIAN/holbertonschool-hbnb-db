@@ -1,0 +1,13 @@
+- Things you need to do
+1) finish the CRUD database operations
+2) Link the CRUD ops to the end routes
+2) Reference correctly the arguments in the db.py file
+
+- Things to discuss
+1) ask if you need to do a table for base class in models/base.py
+
+- Things made
+1) tables done in user amenity city country & review.
+2) made the get all method in db.py dont know if it works not tested yet.
+3) Finished implementing CRUD in db.py it still needs to connect arguments in a way that
+    the system recognizes is part of that class
