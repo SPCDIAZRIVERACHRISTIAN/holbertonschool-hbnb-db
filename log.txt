@@ -1,7 +1,8 @@
 - Things you need to do
 1) finish the CRUD database operations
 2) Link the CRUD ops to the end routes
-2) Reference correctly the arguments in the db.py file
+3) Reference correctly the arguments in the db.py file
+4) fix the arguments in db to link them to the models
 
 - Things to discuss
 1) ask if you need to do a table for base class in models/base.py
