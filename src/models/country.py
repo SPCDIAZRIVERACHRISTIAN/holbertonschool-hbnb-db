@@ -2,8 +2,6 @@
 Country related functionality
 """
 from . import db
-
-
 class Country(db.Model):
     """
     Country representation
@@ -17,17 +15,17 @@ class Country(db.Model):
 
     code = db.Column(db.String(3), primary_key=True)
     name = db.Column(db.String(120), nullable=False)
-    cities = db.relationship('City', back_populates='country')
+    cities = db.relationship('cities', backref="countries")
 
-    def __init__(self, name: str, code: str, **kw) -> None:
+    '''def __init__(self, name: str, code: str, **kw) -> None:
         """Dummy init"""
         super().__init__(**kw)
         self.name = name
-        self.code = code
+        self.code = code'''
 
     def __repr__(self) -> str:
         """Dummy repr"""
-        return f"<Country {self.code} ({self.name})>"
+        return f"<Country={self.code} name={self.name}>"
 
     def to_dict(self) -> dict:
         """Returns the dictionary representation of the country"""

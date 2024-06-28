@@ -2,9 +2,8 @@
 City related functionality
 """
 
-from src.models.country import Country
-from . import db
 
+from . import db
 
 class City(db.Model):
     """City representation"""
@@ -13,7 +12,7 @@ class City(db.Model):
     id = db.Column(db.String(36), primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     country_code = db.Column(db.String(3), db.ForeignKey('countries.code'), nullable=False)
-    country = db.relationship('Country', back_populates='cities')
+    # Ensure the Country class has something like: cities = db.relationship("City", backref="country")
     places = db.relationship('Place', back_populates='city')
 
     def __init__(self, name: str, country_code: str, **kw) -> None:

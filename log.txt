@@ -12,3 +12,10 @@
 2) made the get all method in db.py dont know if it works not tested yet.
 3) Finished implementing CRUD in db.py it still needs to connect arguments in a way that
     the system recognizes is part of that class
+4) found out that a way to use db in the project is to use alembic which is
+    a migrating tool that takes the data and migrates it to databases
+5) cannot make test work because of this error:
+    sqlalchemy.exc.InvalidRequestError: When initializing mapper Mapper[Country(countries)],
+    expression 'cities' failed to locate a name ('cities'). If this is a class name, consider adding this relationship()
+    to the <class 'src.models.country.Country'> class after both dependent classes have been defined.
+    try to fix this issue in order to see what is working and what is not
