@@ -2,28 +2,26 @@
 User related functionality
 """
 
+from src.models.base import Base
 from . import db
+
 
 class User(db.Model):
     """User representation"""
 
     __tablename__ = 'users'
 
+    id = db.Column(db.String(36), primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(128), nullable=False)
-    is_admin = db.Column(db.Boolean, default=False)
-    first_name = db.Column(db.String(36), nullable=False)
-    last_name = db.Column(db.String(36), nullable=False)
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
+    places = db.relationship('Place', back_populates='host')
+    reviews = db.relationship('Review', back_populates='user')
 
-    places = db.relationship("Place", back_populates='host')
-    reviews = db.relationship("Review", back_populates='user')
-
-
-    def __init__(self, email: str, password: str, first_name: str, last_name: str, **kw):
+    def __init__(self, email: str, first_name: str, last_name: str, **kw):
         """Dummy init"""
         super().__init__(**kw)
         self.email = email
-        self.password = password
         self.first_name = first_name
         self.last_name = last_name
 

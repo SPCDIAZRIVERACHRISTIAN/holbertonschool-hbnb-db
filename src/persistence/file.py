@@ -35,7 +35,7 @@ class FileRepository(Repository):
         }
 
         with open(self.__filename, "w") as file:
-            json.dump(serialized, file, indent=4)
+            json.dump(serialized, file)
 
     def get_all(self, model_name: str):
         """Get all objects of a given model"""

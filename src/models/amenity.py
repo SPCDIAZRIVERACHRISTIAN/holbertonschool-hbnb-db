@@ -2,16 +2,16 @@
 Amenity related functionality
 """
 
+from src.models.base import Base
 from . import db
-
 
 
 class Amenity(db.Model):
     """Amenity representation"""
-
     __tablename__ = 'amenities'
 
-    name = db.Column(db.String(128), nullable=False)
+    id = db.Column(db.String(36), primary_key=True)
+    name = db.Column(db.String(120), unique=True, nullable=False)
     places = db.relationship('PlaceAmenity', back_populates='amenity')
 
     def __init__(self, name: str, **kw) -> None:
@@ -64,9 +64,9 @@ class Amenity(db.Model):
 
 class PlaceAmenity(db.Model):
     """PlaceAmenity representation"""
-
     __tablename__ = 'place_amenities'
 
+    id = db.Column(db.String(36), primary_key=True)
     place_id = db.Column(db.String(36), db.ForeignKey('places.id'), primary_key=True)
     amenity_id = db.Column(db.String(36), db.ForeignKey('amenities.id'), primary_key=True)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())

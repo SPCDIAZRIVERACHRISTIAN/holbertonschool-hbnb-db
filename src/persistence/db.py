@@ -11,59 +11,77 @@
     - delete
     - reload (which can be empty)
 """
-from src.models.base import Base
-from src.models import db
-from src.persistence.repository import Repository
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import create_engine, Column, Integer, String, DateTime
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, scoped_session
+from src.models.base import Base
+from src.persistence.repository import Repository
+from sqlalchemy.orm import Session
 
 
 class DBRepository(Repository):
-    """Dummy DB repository"""
+    """This repository implements CRUD operations"""
 
-    def __init__(self) -> None:
-        self.__session = None
-        self.reload()
+    def __init__(self, engine, db_session=Session) -> None:
+        """This initializes the session for database access"""
+        self.db_session = db_session
+        self.engine = engine
+
+    def create_table(self):
+        '''This method creates the tables in the database.'''
+        Base.metadata.create_all(self.db_session)
 
     def get_all(self, model_name: str) -> list:
-        try:
-            return self.__session.query(model_name).all()
-        except SQLAlchemyError:
-            self.__session.rollback()
-            return []
+        """Returns a list of dictionaries representing all records of the given model."""
+        # Assuming 'model_name' is a valid model class reference. If it's a string, you'll need to map it to a model class.
+        model_class = self._get_model_class_by_name(model_name)  # You need to implement this method.
+        query_result = self.db_session.query(model_class).all()
+        data = [self._model_to_dict(instance) for instance in query_result]
+        return data
+
+    def _model_to_dict(self, instance):
+        """Converts a SQLAlchemy model instance into a dictionary."""
+        return {column.name: getattr(instance, column.name) for column in instance.__table__.columns}
+
+    def _get_model_class_by_name(self, model_name):
+        """Returns the model class based on the given model name."""
+        model_class = getattr(self.db_session, model_name, None)
+        if model_class is None:
+            raise ValueError(f"Invalid model name: {model_name}")
+        return model_class
 
     def get(self, model_name: str, obj_id: str) -> Base | None:
-        try:
-            return self.__session.query(model_name).get(obj_id)
-        except SQLAlchemyError:
-            self.__session.rollback()
-            return None
+        """Retrieves a single object by the id"""
+        model_class = self._get_model_class_by_name(model_name)
+        return self.db_session.query(model_class).filter(model_class == obj_id).first()
+
 
     def reload(self) -> None:
-        db.create_all()
-        self.__session = db.session
+        """Not implemented"""
+        pass
 
-
-    def save(self, obj: Base) -> None:
+    def save(self, obj: Base) -> None: #use this as example to fill the rest of methods
+        """Saves object in table"""
         try:
-            self.__session.add(obj)
-            self.__session.commit()
-        except SQLAlchemyError:
-            self.__session.rollback()
+            self.db_session.add(obj)
+            self.db_session()
+        except SQLAlchemyError as e:
+            self.db_session.rollback()
+            raise e
 
-    def update(self, obj: Base) -> None:
+    def update(self, obj: Base) -> Base | None:
+        """Not implemented"""
         try:
-            self.__session.commit()
+            self.db_session.commit()
+            return obj
         except SQLAlchemyError:
-            self.__session.rollback()
+            self.db_session.rollback()
+            return None
 
     def delete(self, obj: Base) -> bool:
+        """Not implemented"""
         try:
-            self.__session.delete(obj)
-            self.__session.commit()
+            self.db_session.delete(obj)
+            self.session.commit()
             return True
         except SQLAlchemyError:
-            self.__session.rollback()
+            self.db_session.rollback()
             return False

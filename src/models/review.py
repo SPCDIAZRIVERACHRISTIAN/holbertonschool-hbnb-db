@@ -3,27 +3,22 @@ Review related functionality
 """
 
 from src.models.base import Base
-from . import db
 from src.models.place import Place
 from src.models.user import User
-from sqlalchemy import ForeignKey
-from sqlalchemy.orm import relationship
+from . import db
 
 
 class Review(db.Model):
     """Review representation"""
-
     __tablename__ = 'reviews'
 
+    id = db.Column(db.String(36), primary_key=True)
     place_id = db.Column(db.String(36), db.ForeignKey('places.id'), nullable=False)
     user_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
     comment = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Float, nullable=False)
-
-    place = db.relationship("Place", back_populates='reviews')
+    place = db.relationship('Place', back_populates='reviews')
     user = db.relationship('User', back_populates='reviews')
-
-
 
     def __init__(
         self, place_id: str, user_id: str, comment: str, rating: float, **kw

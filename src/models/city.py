@@ -2,22 +2,18 @@
 City related functionality
 """
 
-from src.models.base import Base
+
 from . import db
-from src.models.country import Country
-from sqlalchemy import ForeignKey
 
 class City(db.Model):
     """City representation"""
-
     __tablename__ = 'cities'
 
-    name = db.Column(db.String(128), nullable=False)
-    country_code = db.Column(db.String(3), db.ForeignKey("countries.code"), nullable=False)
-    place = db.relationship("Place", back_populates='city')
-    country = db.relationship('Country', back_populates='cities')
-
-
+    id = db.Column(db.String(36), primary_key=True)
+    name = db.Column(db.String(120), nullable=False)
+    country_code = db.Column(db.String(3), db.ForeignKey('countries.code'), nullable=False)
+    # Ensure the Country class has something like: cities = db.relationship("City", backref="country")
+    places = db.relationship('Place', back_populates='city')
 
     def __init__(self, name: str, country_code: str, **kw) -> None:
         """Dummy init"""
@@ -44,7 +40,7 @@ class City(db.Model):
     def create(data: dict) -> "City":
         """Create a new city"""
         from src.persistence import repo
-
+        from src.models.country import Country
         country = Country.get(data["country_code"])
 
         if not country:
