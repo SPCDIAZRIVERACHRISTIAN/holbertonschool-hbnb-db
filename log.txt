@@ -19,3 +19,4 @@
     expression 'cities' failed to locate a name ('cities'). If this is a class name, consider adding this relationship()
     to the <class 'src.models.country.Country'> class after both dependent classes have been defined.
     try to fix this issue in order to see what is working and what is not
+    a) Found this links for trying to solve issue https://docs.pylonsproject.org/projects/pyramid_cookbook/en/latest/database/sqlalchemy.html#importing-all-sqlalchemy-models & https://docs.pylonsproject.org/projects/pyramid/en/latest/narr/project.html#creating-a-project

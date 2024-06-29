@@ -15,13 +15,8 @@ def create_app(config_class="src.config.DevelopmentConfig") -> Flask:
     app = Flask(__name__)
     app.url_map.strict_slashes = False
     app.config.from_object(config_class)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///development.db'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['USE_DATABASE'] = True
-#aks how to make the configuration to access host login and pwd for mysql
-    from src.models import db
 
-    db = SQLAlchemy(app)
+    from src.models import db
     db.init_app(app)
 
     register_extensions(app)
@@ -29,6 +24,7 @@ def create_app(config_class="src.config.DevelopmentConfig") -> Flask:
     register_handlers(app)
 
     return app
+
 
 def register_extensions(app: Flask) -> None:
     """Register the extensions for the Flask app"""
