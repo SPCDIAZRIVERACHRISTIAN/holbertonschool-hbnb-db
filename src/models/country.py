@@ -15,7 +15,7 @@ class Country(db.Model):
 
     code = db.Column(db.String(3), primary_key=True)
     name = db.Column(db.String(120), nullable=False)
-    cities = db.relationship('cities', backref="countries")
+    #cities = db.relationship('cities', backref="countries")
 
     '''def __init__(self, name: str, code: str, **kw) -> None:
         """Dummy init"""

@@ -1,4 +1,7 @@
-""" Entry point for the application. """
+"""
+    Entry point for the application.
+    This is a database entry point for the app.
+"""
 
 from flask.cli import FlaskGroup
 from src import create_app

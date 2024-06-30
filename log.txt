@@ -1,8 +1,13 @@
+LEGEND
+N/TESTED = hasnt been tested yet
+Y/TESTED = tested and ran successfully
+DONE = task complete
 - Things you need to do
-1) finish the CRUD database operations
+1) finish the CRUD database operations DONE N/TESTED
 2) Link the CRUD ops to the end routes
 3) Reference correctly the arguments in the db.py file
 4) fix the arguments in db to link them to the models
+
 
 - Things to discuss
 1) ask if you need to do a table for base class in models/base.py
@@ -20,3 +25,5 @@
     to the <class 'src.models.country.Country'> class after both dependent classes have been defined.
     try to fix this issue in order to see what is working and what is not
     a) Found this links for trying to solve issue https://docs.pylonsproject.org/projects/pyramid_cookbook/en/latest/database/sqlalchemy.html#importing-all-sqlalchemy-models & https://docs.pylonsproject.org/projects/pyramid/en/latest/narr/project.html#creating-a-project
+6) Found out that the db runs through manage.py entry point not hbnb that one has to be for production and manage for development
+7) fixed circular import on city and country and new problem where it initialized database 2 times

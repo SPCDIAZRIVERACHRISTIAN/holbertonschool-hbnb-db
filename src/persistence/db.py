@@ -14,13 +14,13 @@
 from sqlalchemy.exc import SQLAlchemyError
 from src.models.base import Base
 from src.persistence.repository import Repository
-from sqlalchemy.orm import Session
+from . import db
 
 
 class DBRepository(Repository):
     """This repository implements CRUD operations"""
 
-    def __init__(self, engine, db_session=Session) -> None:
+    def __init__(self, engine, db_session=db) -> None:
         """This initializes the session for database access"""
         self.db_session = db_session
         self.engine = engine
@@ -43,9 +43,9 @@ class DBRepository(Repository):
 
     def _get_model_class_by_name(self, model_name):
         """Returns the model class based on the given model name."""
-        model_class = getattr(self.db_session, model_name, None)
         if model_class is None:
             raise ValueError(f"Invalid model name: {model_name}")
+        model_class = getattr(self.db_session, model_name, None)
         return model_class
 
     def get(self, model_name: str, obj_id: str) -> Base | None:
@@ -68,7 +68,7 @@ class DBRepository(Repository):
             raise e
 
     def update(self, obj: Base) -> Base | None:
-        """Not implemented"""
+        """This method saves an object and returns nothing"""
         try:
             self.db_session.commit()
             return obj
@@ -77,7 +77,10 @@ class DBRepository(Repository):
             return None
 
     def delete(self, obj: Base) -> bool:
-        """Not implemented"""
+        """
+            This method deletes an object and returns
+            false if it did not work and true if it did.
+        """
         try:
             self.db_session.delete(obj)
             self.session.commit()

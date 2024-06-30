@@ -15,48 +15,10 @@ def create_app(config_class="src.config.DevelopmentConfig") -> Flask:
     app = Flask(__name__)
     app.url_map.strict_slashes = False
     app.config.from_object(config_class)
-
-    from src.models import db
-    db.init_app(app)
-
-    register_extensions(app)
-    register_routes(app)
-    register_handlers(app)
-
-    return app
-
-
-def register_extensions(app: Flask) -> None:
-    """Register the extensions for the Flask app"""
-    cors.init_app(app, resources={r"/api/*": {"origins": "*"}})
-    # Further extensions can be added here
-
-
-""" Initialize the Flask app. """
-
-from flask import Flask
-from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
-
-cors = CORS()
-
-
-def create_app(config_class="src.config.DevelopmentConfig") -> Flask:
-    """
-    Create a Flask app with the given configuration class.
-    The default configuration class is DevelopmentConfig.
-    """
-    app = Flask(__name__)
-    app.url_map.strict_slashes = False
-    app.config.from_object(config_class)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///development.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['USE_DATABASE'] = True
 #aks how to make the configuration to access host login and pwd for mysql
-    from src.models import db
-
-    db = SQLAlchemy(app)
-    db.init_app(app)
 
     register_extensions(app)
     register_routes(app)
