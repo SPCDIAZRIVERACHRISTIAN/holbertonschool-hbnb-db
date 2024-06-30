@@ -27,3 +27,4 @@ DONE = task complete
     a) Found this links for trying to solve issue https://docs.pylonsproject.org/projects/pyramid_cookbook/en/latest/database/sqlalchemy.html#importing-all-sqlalchemy-models & https://docs.pylonsproject.org/projects/pyramid/en/latest/narr/project.html#creating-a-project
 6) Found out that the db runs through manage.py entry point not hbnb that one has to be for production and manage for development
 7) fixed circular import on city and country and new problem where it initialized database 2 times
+8) in memory repository manage your memory to select the type of storage using db or file
