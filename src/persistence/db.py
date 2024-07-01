@@ -52,7 +52,7 @@ class DBRepository(Repository):
             self.__session.commit()
             print('user added')
         except SQLAlchemyError:
-            print("ERROR")
+            print(f"ERROR\n {obj}")
             self.__session.rollback()
 
     def update(self, obj: Base) -> None:

@@ -19,7 +19,7 @@ class User(db.Model):
     reviews = db.relationship("Review", back_populates='user')
 
 
-    def __init__(self, email: str, password: str, is_admin: str, first_name: str, last_name: str, **kw):
+    def __init__(self, email: str, password: str, is_admin: bool, first_name: str, last_name: str, **kw):
         """Dummy init"""
         super().__init__(**kw)
         self.email = email
