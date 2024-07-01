@@ -79,3 +79,4 @@ class ProductionConfig(Config):
         "DATABASE_URL",
         "mysql://user:password@localhost/hbnb_prod"
     )
+
