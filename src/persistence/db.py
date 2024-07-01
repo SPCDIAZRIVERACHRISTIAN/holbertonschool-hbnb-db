@@ -24,7 +24,7 @@ class DBRepository(Repository):
     """Dummy DB repository"""
 
     def __init__(self) -> None:
-        self.__session = None
+        self.__session = db.session
         self.reload()
 
     def get_all(self, model_name: str) -> list:
@@ -50,7 +50,9 @@ class DBRepository(Repository):
         try:
             self.__session.add(obj)
             self.__session.commit()
+            print('user added')
         except SQLAlchemyError:
+            print("ERROR")
             self.__session.rollback()
 
     def update(self, obj: Base) -> None:

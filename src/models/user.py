@@ -19,11 +19,12 @@ class User(db.Model):
     reviews = db.relationship("Review", back_populates='user')
 
 
-    def __init__(self, email: str, password: str, first_name: str, last_name: str, **kw):
+    def __init__(self, email: str, password: str, is_admin: str, first_name: str, last_name: str, **kw):
         """Dummy init"""
         super().__init__(**kw)
         self.email = email
         self.password = password
+        self.is_admin = is_admin
         self.first_name = first_name
         self.last_name = last_name
 
@@ -36,6 +37,8 @@ class User(db.Model):
         return {
             "id": self.id,
             "email": self.email,
+            "password": self.password,
+            "is_admin": self.is_admin,
             "first_name": self.first_name,
             "last_name": self.last_name,
             "created_at": self.created_at.isoformat(),
@@ -54,9 +57,9 @@ class User(db.Model):
                 raise ValueError("User already exists")
 
         new_user = User(**user)
-
         repo.save(new_user)
-
+        if repo.save(new_user) == True:
+            print('user added')
         return new_user
 
     @staticmethod
@@ -71,6 +74,10 @@ class User(db.Model):
 
         if "email" in data:
             user.email = data["email"]
+        if "password" in data:
+            user.password = data["password"]
+        if "is_admin" in data:
+            user.is_admin = data["is_admin"]
         if "first_name" in data:
             user.first_name = data["first_name"]
         if "last_name" in data:
