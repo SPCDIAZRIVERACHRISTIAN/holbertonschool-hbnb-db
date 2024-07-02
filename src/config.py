@@ -22,6 +22,8 @@ class Config(ABC):
     TESTING = False
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    load_dotenv()
+    JWT_SECRET_KEY = os.environ.get("SECRET")
 
 class DevelopmentConfig(Config):
     """

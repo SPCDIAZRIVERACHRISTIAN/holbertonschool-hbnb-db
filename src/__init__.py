@@ -2,6 +2,7 @@
 
 from flask import Flask
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 
 
 cors = CORS()
@@ -15,6 +16,8 @@ def create_app(config_class="src.config.DevelopmentConfig") -> Flask:
     app = Flask(__name__)
     app.url_map.strict_slashes = False
     app.config.from_object(config_class)
+    app.config['JWT_SECRET_KEY']  # Change this!
+    jwt = JWTManager(app)
 
     print(f"Using {config_class} as configurartion")
     from src.models import db

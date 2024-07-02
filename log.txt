@@ -3,14 +3,14 @@ N/TESTED = hasnt been tested yet
 Y/TESTED = tested and ran successfully
 DONE = task complete
 - Things you need to do
-1) finish the CRUD database operations DONE N/TESTED
-2) Link the CRUD ops to the end routes
-3) Reference correctly the arguments in the db.py file
-4) fix the arguments in db to link them to the models
+1) finish the CRUD database operations DONE Y/TESTED
+2) Link the CRUD ops to the end routes DONE Y/TESTED
+3) Reference correctly the arguments in the db.py file DONE Y/TESTED
+4) fix the arguments in db to link them to the models DONE Y/TESTED
 
 
 - Things to discuss
-1) ask if you need to do a table for base class in models/base.py
+1)
 
 - Things made
 1) tables done in user amenity city country & review.
@@ -28,3 +28,6 @@ DONE = task complete
 6) Found out that the db runs through manage.py entry point not hbnb that one has to be for production and manage for development
 7) fixed circular import on city and country and new problem where it initialized database 2 times
 8) in memory repository manage your memory to select the type of storage using db or file
+9) Database works! done with tasks 0 and 1 now going in to 2
+10) have been adding little by little the requirements of task 02 left it on last step finish users.py/routes and add route method def protected():
+    to the user.py in controllers
