@@ -7,6 +7,7 @@ from . import db
 from src.models.country import Country
 from sqlalchemy import ForeignKey
 
+
 class City(db.Model):
     """City representation"""
 
@@ -14,8 +15,8 @@ class City(db.Model):
 
     name = db.Column(db.String(128), nullable=False)
     country_code = db.Column(db.String(3), db.ForeignKey("countries.code"), nullable=False)
-    place = db.relationship("Place", back_populates='city')
     country = db.relationship('Country', back_populates='cities')
+    places = db.relationship('Place', back_populates='city')
 
 
 

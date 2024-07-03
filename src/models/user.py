@@ -2,11 +2,7 @@
 User related functionality
 """
 
-from flask import app
 from . import db
-from flask_bcrypt import Bcrypt
-
-bcrypt = Bcrypt(app)
 
 class User(db.Model):
     """User representation"""
@@ -14,7 +10,7 @@ class User(db.Model):
     __tablename__ = 'users'
 
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128), nullable=False)
+    password = db.Column(db.String(128), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
     first_name = db.Column(db.String(36), nullable=False)
     last_name = db.Column(db.String(36), nullable=False)
@@ -49,13 +45,6 @@ class User(db.Model):
             "updated_at": self.updated_at.isoformat(),
         }
 
-
-    def set_password(self, password):
-        self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
-
-    def check_password(self, password):
-        return bcrypt.check_password_hash(self.password_hash, password)
-
     @staticmethod
     def create(user: dict) -> "User":
         """Create a new user"""
@@ -68,9 +57,9 @@ class User(db.Model):
                 raise ValueError("User already exists")
 
         new_user = User(**user)
+
         repo.save(new_user)
-        if repo.save(new_user) == True:
-            print('user added')
+
         return new_user
 
     @staticmethod

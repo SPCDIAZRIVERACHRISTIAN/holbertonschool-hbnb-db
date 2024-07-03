@@ -15,16 +15,14 @@ from src.models.base import Base
 from src.models import db
 from src.persistence.repository import Repository
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import create_engine, Column, Integer, String, DateTime
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, scoped_session
+from utils.populate import populate_db
 
 
 class DBRepository(Repository):
     """Dummy DB repository"""
 
     def __init__(self) -> None:
-        self.__session = db.session
+        self.__session = None
         self.reload()
 
     def get_all(self, model_name: str) -> list:
@@ -42,17 +40,18 @@ class DBRepository(Repository):
             return None
 
     def reload(self) -> None:
-        db.create_all()
         self.__session = db.session
-
+        db.create_all()
+        populate_db(self)
 
     def save(self, obj: Base) -> None:
         try:
+
             self.__session.add(obj)
             self.__session.commit()
-            print('user added')
+            print("user added")
         except SQLAlchemyError:
-            print(f"ERROR\n {obj}")
+            print("ERROR")
             self.__session.rollback()
 
     def update(self, obj: Base) -> None:
@@ -69,3 +68,5 @@ class DBRepository(Repository):
         except SQLAlchemyError:
             self.__session.rollback()
             return False
+
+

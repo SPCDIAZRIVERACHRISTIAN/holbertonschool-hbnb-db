@@ -2,11 +2,8 @@
 Users controller module
 """
 
-import bcrypt
-from flask import abort, jsonify, request
-from flask_jwt_extended import create_access_token
+from flask import abort, request
 from src.models.user import User
-
 
 
 def get_users():
@@ -64,12 +61,3 @@ def delete_user(user_id: str):
         abort(404, f"User with ID {user_id} not found")
 
     return "", 204
-
-def login():
-     username = request.json.get('username', None)
-     password = request.json.get('password', None)
-     user = User.query.filter_by(username=username).first()
-     if user and bcrypt.check_password_hash(user.password, password):
-         access_token = create_access_token(identity=username)
-         return jsonify(access_token=access_token), 200
-     return 'Wrong username or password', 401

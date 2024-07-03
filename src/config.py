@@ -11,7 +11,6 @@ from abc import ABC
 import os
 from dotenv import load_dotenv
 
-
 class Config(ABC):
     """
     Initial configuration settings
@@ -22,8 +21,7 @@ class Config(ABC):
     TESTING = False
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    load_dotenv()
-    JWT_SECRET_KEY = os.environ.get("SECRET")
+
 
 class DevelopmentConfig(Config):
     """
@@ -81,4 +79,3 @@ class ProductionConfig(Config):
         "DATABASE_URL",
         "mysql://user:password@localhost/hbnb_prod"
     )
-

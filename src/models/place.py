@@ -7,6 +7,8 @@ from src.models.city import City
 from src.models.user import User
 
 
+
+
 class Place(db.Model):
     """Place representation"""
 
@@ -25,7 +27,7 @@ class Place(db.Model):
     max_guests = db.Column(db.Integer, nullable=False)
 
     host = db.relationship("User", back_populates='places')
-    city = db.relationship('City', back_populates='place')
+    city = db.relationship('City', back_populates='places')
     amenities = db.relationship("PlaceAmenity", back_populates='place', lazy='dynamic')
     reviews = db.relationship("Review", back_populates='place', lazy='dynamic')
 

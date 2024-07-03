@@ -6,7 +6,6 @@ import os
 from src.persistence.repository import Repository
 from utils.constants import REPOSITORY_ENV_VAR
 
-
 repo: Repository
 
 if os.getenv(key=REPOSITORY_ENV_VAR) == "db":

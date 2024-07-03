@@ -31,3 +31,5 @@ DONE = task complete
 9) Database works! done with tasks 0 and 1 now going in to 2
 10) have been adding little by little the requirements of task 02 left it on last step finish users.py/routes and add route method def protected():
     to the user.py in controllers
+11) manage to fix a lot of issues and now it api requests works now i need to see if countries load from populate_db
+12) remember to export REPOSITORY=db to use database before running app if you dont do that it wont work as intended
