@@ -41,8 +41,14 @@ class DBRepository(Repository):
 
     def reload(self) -> None:
         self.__session = db.session
-        db.create_all()
-        populate_db(self)
+        try:
+            db.create_all()
+            self.__session.commit()
+            populate_db(self)
+            print("commited")
+        except SQLAlchemyError:
+            print("ERROR")
+            self.__session.rollback()
 
     def save(self, obj: Base) -> None:
         try:

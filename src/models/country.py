@@ -14,8 +14,8 @@ class Country(db.Model):
 
     __tablename__ = 'countries'
 
-    name = db.Column(db.String(128), nullable=False)
-    code = db.Column(db.String(2), primary_key=True, nullable=False)
+    name = db.Column(db.String(128), unique=True, nullable=False)
+    code = db.Column(db.String(2), unique=True, primary_key=True, nullable=False)
     cities = db.relationship("City", back_populates='country')
 
 

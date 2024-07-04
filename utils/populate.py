@@ -8,12 +8,17 @@ import pycountry
 def populate_db(repo: Repository) -> None:
     """Populate the database with countries and cities."""
 
-    countries = []
+    try:
+        countries = []
 
-    for count in pycountry.countries:
-        count = Country(count.name, count.alpha_2)
-        countries.append(count)
+        for count in pycountry.countries:
+            existing_countries = Country.get(count.alpha_2)
+            if existing_countries is None:
+                count = Country(count.name, count.alpha_2)
+                countries.append(count)
 
-    for country in countries:
-        repo.save(country)
-    print("Memory DB populated")
+        for country in countries:
+            repo.save(country)
+        print("Memory DB populated")
+    except ImportError:
+        print("No more countries to add")
