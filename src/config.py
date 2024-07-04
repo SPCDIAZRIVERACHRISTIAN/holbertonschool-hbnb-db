@@ -40,6 +40,7 @@ class DevelopmentConfig(Config):
     """
     load_dotenv()
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
+    JWT_SECRET_KEY = "JWT_SECRET"
     DEBUG = True
 
 
