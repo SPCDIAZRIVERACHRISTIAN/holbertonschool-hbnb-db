@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from src.models.user import User
 from src import bcrypt
-from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, get_jwt
 
 def login():
     email = request.json.get('email', None)
@@ -17,3 +17,10 @@ def login():
 def protected():
     current_user = get_jwt_identity()
     return jsonify(logged_in_as=current_user), 200
+
+def check_admin():
+    claims = get_jwt()
+    if claims.get('is_admin'):
+        return True
+    else:
+        return False

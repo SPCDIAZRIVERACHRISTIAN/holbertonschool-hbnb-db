@@ -4,6 +4,7 @@ User related functionality
 
 from . import db
 
+
 class User(db.Model):
     """User representation"""
 
