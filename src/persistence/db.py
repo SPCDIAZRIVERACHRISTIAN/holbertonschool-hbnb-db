@@ -30,8 +30,10 @@ class DBRepository(Repository):
     def get_all(self, model_name: str) -> list:
         """Get all objects of a given model from the database"""
         try:
+            print("God")
             return self.session.query(model_name).all()
         except SQLAlchemyError:
+            print("Erorr")
             self.session.rollback()
             return []
 

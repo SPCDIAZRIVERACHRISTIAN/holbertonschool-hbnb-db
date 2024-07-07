@@ -4,6 +4,7 @@ Reviews controller module
 
 from flask import abort, request
 from src.models.review import Review
+from src.models.user import User
 
 
 def get_reviews():
@@ -60,7 +61,8 @@ def get_review_by_id(review_id: str):
 
 def update_review(review_id: str):
     """Updates a review by ID"""
-    data = request.get_json()
+    if User.id == Review.user_id:
+        data = request.get_json()
 
     try:
         review: Review | None = Review.update(review_id, data)
@@ -75,7 +77,8 @@ def update_review(review_id: str):
 
 def delete_review(review_id: str):
     """Deletes a review by ID"""
-    if not Review.delete(review_id):
-        abort(404, f"Review with ID {review_id} not found")
+    if User.id == Review.user_id:
+        if not Review.delete(review_id):
+            abort(404, f"Review with ID {review_id} not found")
 
     return "", 204

@@ -5,6 +5,13 @@ from flask_cors import CORS
 
 cors = CORS()
 
+from flask_bcrypt import Bcrypt
+
+bcrypt = Bcrypt()
+
+from flask_jwt_extended import JWTManager
+jwt = JWTManager()
+
 
 def create_app(config_class) -> Flask:
     """
@@ -18,6 +25,8 @@ def create_app(config_class) -> Flask:
 
     from src.models import db
     db.init_app(app)
+    jwt.init_app(app)
+    bcrypt.init_app(app)
 
     register_extensions(app)
     register_routes(app)

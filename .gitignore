@@ -6,3 +6,4 @@ __pycache__/
 instances/
 *.db
 *.json
+create_db.sql

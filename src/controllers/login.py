@@ -4,11 +4,12 @@ from src import bcrypt
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 
 def login():
-    username = request.json.get('username', None)
+    email = request.json.get('email', None)
     password = request.json.get('password', None)
-    user = User.query.filter_by(username=username).first()
-    if user and bcrypt.check_password_hash(user.password, password):
-        access_token = create_access_token(identity=username)
+    user = User.query.filter_by(email=email).first()
+    if user and bcrypt.check_password_hash(user.password_hash, password):
+        additional_claims = {"is_admin": user.is_admin}
+        access_token = create_access_token(identity=email, additional_claims=additional_claims)
         return jsonify(access_token=access_token), 200
     return 'Wrong username or password', 401
 

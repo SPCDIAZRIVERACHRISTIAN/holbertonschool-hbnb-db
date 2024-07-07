@@ -4,6 +4,7 @@ Places controller module
 
 from flask import abort, request
 from src.models.place import Place
+from src.models.user import User
 
 
 def get_places():
@@ -15,7 +16,8 @@ def get_places():
 
 def create_place():
     """Creates a new place"""
-    data = request.get_json()
+    if User.is_admin == True and User.id == Place.user_id:
+        data = request.get_json()
 
     try:
         place = Place.create(data)
@@ -39,7 +41,8 @@ def get_place_by_id(place_id: str):
 
 def update_place(place_id: str):
     """Updates a place by ID"""
-    data = request.get_json()
+    if User.is_admin == True and User.id == Place.user_id:
+        data = request.get_json()
 
     try:
         place: Place | None = Place.update(place_id, data)
@@ -54,7 +57,8 @@ def update_place(place_id: str):
 
 def delete_place(place_id: str):
     """Deletes a place by ID"""
-    if not Place.delete(place_id):
-        abort(404, f"Place with ID {place_id} not found")
+    if User.is_admin == True and User.id == Place.user_id:
+        if not Place.delete(place_id):
+            abort(404, f"Place with ID {place_id} not found")
 
     return "", 204
