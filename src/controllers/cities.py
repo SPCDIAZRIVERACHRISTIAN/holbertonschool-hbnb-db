@@ -2,9 +2,10 @@
 Cities controller module
 """
 
-from flask import request, abort
+from flask import request, abort, jsonify
 from src.models.city import City
-
+from flask_jwt_extended import jwt_required
+from src.controllers.login import check_admin
 
 def get_cities():
     """Returns all cities"""
@@ -12,19 +13,23 @@ def get_cities():
 
     return [city.to_dict() for city in cities]
 
-
+@jwt_required()
 def create_city():
     """Creates a new city"""
-    data = request.get_json()
+    if check_admin() == True:
+        data = request.get_json()
 
-    try:
-        city = City.create(data)
-    except KeyError as e:
-        abort(400, f"Missing field: {e}")
-    except ValueError as e:
-        abort(400, str(e))
+        try:
+            city = City.create(data)
+        except KeyError as e:
+            abort(400, f"Missing field: {e}")
+        except ValueError as e:
+            abort(400, str(e))
 
-    return city.to_dict(), 201
+        return city.to_dict(), 201
+    else:
+        return jsonify({'msg': 'Not allowed'}), 403
+
 
 
 def get_city_by_id(city_id: str):
@@ -51,10 +56,14 @@ def update_city(city_id: str):
 
     return city.to_dict()
 
-
+@jwt_required()
 def delete_city(city_id: str):
     """Deletes a city by ID"""
-    if not City.delete(city_id):
-        abort(404, f"City with ID {city_id} not found")
+    if check_admin() == True:
+        if not City.delete(city_id):
+            abort(404, f"City with ID {city_id} not found")
 
-    return "", 204
+        return "", 204
+    else:
+        return jsonify({'msg': 'Not allowed'}), 403
+

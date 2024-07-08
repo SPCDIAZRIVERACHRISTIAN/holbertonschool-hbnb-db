@@ -2,8 +2,10 @@
 Amenity controller module
 """
 
-from flask import abort, request
+from flask import abort, request, jsonify
+from src.controllers.login import check_admin
 from src.models.amenity import Amenity
+from flask_jwt_extended import jwt_required
 
 
 def get_amenities():
@@ -15,7 +17,9 @@ def get_amenities():
 
 def create_amenity():
     """Creates a new amenity"""
-    data = request.get_json()
+
+    if check_admin() == True:
+        data = request.get_json()
 
     try:
         amenity = Amenity.create(data)
@@ -39,7 +43,8 @@ def get_amenity_by_id(amenity_id: str):
 
 def update_amenity(amenity_id: str):
     """Updates a amenity by ID"""
-    data = request.get_json()
+    if check_admin() == True:
+        data = request.get_json()
 
     updated_amenity: Amenity | None = Amenity.update(amenity_id, data)
 
@@ -51,7 +56,10 @@ def update_amenity(amenity_id: str):
 
 def delete_amenity(amenity_id: str):
     """Deletes a amenity by ID"""
-    if not Amenity.delete(amenity_id):
-        abort(404, f"Amenity with ID {amenity_id} not found")
+    if check_admin() == True:
+        if not Amenity.delete(amenity_id):
+              abort(404, f"Amenity with ID {amenity_id} not found")
 
-    return "", 204
+        return "", 204
+    else:
+        return jsonify({'msg': 'Not allowed'}), 403

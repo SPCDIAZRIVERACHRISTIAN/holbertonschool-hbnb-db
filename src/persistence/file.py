@@ -7,6 +7,7 @@ import json
 from src.models.base import Base
 from src.persistence.repository import Repository
 from utils.constants import FILE_STORAGE_FILENAME
+from utils.populate import populate_db
 
 
 class FileRepository(Repository):
@@ -26,6 +27,7 @@ class FileRepository(Repository):
     def __init__(self) -> None:
         """Calls reload method"""
         self.reload()
+        populate_db(self)
 
     def _save_to_file(self):
         """Helper method to save the current object data to the file"""
@@ -130,3 +132,10 @@ class FileRepository(Repository):
         self._save_to_file()
 
         return True
+
+    def get_by_code(self, country, code):
+        for c in range(len(self.__data["country"])):
+            return self.__data["country"][c].code
+
+
+            
